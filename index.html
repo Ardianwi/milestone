@@ -395,16 +395,11 @@
 
       <div class="card">
         <div class="eyebrow">Cloud save</div>
-        <h2 style="margin:6px 0 4px">Main di Semua Perangkat ☁️</h2>
-        <p class="muted">Login dengan akun yang sama di HP dan laptop. Setelah Supabase dikonfigurasi, perubahan akan tersimpan otomatis.</p>
-        <div id="cloudStatus" class="cloud-status warn">Cloud belum dikonfigurasi.</div>
-        <input id="cloudEmail" type="email" autocomplete="email" placeholder="Email">
-        <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="Password (minimal 6 karakter)" style="margin-top:8px">
+        <h2 style="margin:6px 0 4px">Save Otomatis ☁️</h2>
+        <p class="muted">Cloud mengikuti PLAYER LOGIN. Login <b>admin</b> di HP/laptop akan membuka save-game yang sama.</p>
+        <div id="cloudStatus" class="cloud-status warn">Menghubungkan ke cloud...</div>
         <div class="actions">
-          <button class="btn primary" id="signInBtn">Login</button>
-          <button class="btn secondary" id="signUpBtn">Daftar</button>
-          <button class="btn secondary" id="syncBtn">Sync Sekarang</button>
-          <button class="btn danger" id="signOutBtn" style="display:none">Logout</button>
+          <button class="btn secondary" id="syncBtn">☁️ Sync Sekarang</button>
         </div>
       </div>
 
@@ -443,8 +438,8 @@
   3. Ganti dua nilai di bawah dengan Project URL dan PUBLISHABLE/ANON key.
   PENTING: JANGAN pernah menaruh service_role / secret key di file frontend.
 */
-const SUPABASE_URL = "PASTE_SUPABASE_PROJECT_URL_HERE";
-const SUPABASE_PUBLISHABLE_KEY = "PASTE_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
+const SUPABASE_URL = "https://xprpjcekbdcxwbdnhook.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pvzmT5G7d2wOqV_8dr-IyQ_ZNmy_16L";
 
 const STEP = 50000;
 const KEY = "moneyQuest_v1";
@@ -465,43 +460,66 @@ function save(){
 
 
 const GAME_USERNAME = "admin";
-const GAME_PASSWORD = "18011993";
-const GAME_LOGIN_KEY = "moneyQuest_game_login";
-
-function isGameLoggedIn(){
-  return sessionStorage.getItem(GAME_LOGIN_KEY)==="yes" ||
-         localStorage.getItem(GAME_LOGIN_KEY)==="yes";
-}
+/*
+  Akun Supabase tetap di belakang layar.
+  Buat user ini sekali di Supabase Authentication > Users:
+  Email    : moneyquest.admin@example.com
+  Password : 18011993
+  Confirm email / Auto confirm: aktif
+*/
+const GAME_SUPABASE_EMAIL = "moneyquest.admin@example.com";
 
 function showGame(){
   document.getElementById("loginScreen").classList.add("hidden");
 }
 
-function showLogin(){
+function showLogin(message=""){
   document.getElementById("loginScreen").classList.remove("hidden");
   document.getElementById("gamePassword").value="";
+  document.getElementById("loginError").textContent=message;
   setTimeout(()=>document.getElementById("gameUsername").focus(),50);
 }
 
-function gameLogin(){
+async function gameLogin(){
   const u=document.getElementById("gameUsername").value.trim();
   const p=document.getElementById("gamePassword").value;
   const err=document.getElementById("loginError");
-  if(u===GAME_USERNAME && p===GAME_PASSWORD){
-    localStorage.setItem(GAME_LOGIN_KEY,"yes");
-    err.textContent="";
-    showGame();
-    showToast("Login berhasil. Selamat bermain 🎮");
-  }else{
+
+  if(u!==GAME_USERNAME){
     err.textContent="Username atau password salah.";
+    return;
+  }
+  if(!cloudReady || !cloudClient){
+    err.textContent="Cloud belum siap. Pastikan Publishable Key sudah dipasang.";
+    return;
+  }
+
+  err.textContent="Menghubungkan ke save-game...";
+  const {data,error}=await cloudClient.auth.signInWithPassword({
+    email: GAME_SUPABASE_EMAIL,
+    password: p
+  });
+
+  if(error || !data?.user){
+    err.textContent="Username atau password salah, atau akun Supabase belum dibuat.";
     document.getElementById("gamePassword").value="";
     document.getElementById("gamePassword").focus();
+    return;
   }
+
+  cloudUser=data.user;
+  err.textContent="";
+  showGame();
+  await loadAndMergeCloud();
+  showToast("Login berhasil. Cloud save aktif ☁️");
 }
 
-function gameLogout(){
-  localStorage.removeItem(GAME_LOGIN_KEY);
-  sessionStorage.removeItem(GAME_LOGIN_KEY);
+async function gameLogout(){
+  if(cloudReady && cloudUser){
+    await uploadCloudState(false);
+    await cloudClient.auth.signOut();
+  }
+  cloudUser=null;
   showLogin();
 }
 
@@ -526,13 +544,11 @@ function setCloudStatus(message, type="warn"){
 
 function setAuthUi(user){
   cloudUser=user||null;
-  const signed=!!cloudUser;
-  document.getElementById("signInBtn").style.display=signed?"none":"inline-block";
-  document.getElementById("signUpBtn").style.display=signed?"none":"inline-block";
-  document.getElementById("signOutBtn").style.display=signed?"inline-block":"none";
-  document.getElementById("cloudEmail").disabled=signed;
-  document.getElementById("cloudPassword").disabled=signed;
-  if(signed) setCloudStatus("☁️ Tersambung: "+(cloudUser.email||"akun")+" • autosave aktif","ok");
+  if(cloudUser){
+    setCloudStatus("☁️ Cloud aktif • save-game tersambung","ok");
+  }else{
+    setCloudStatus("Belum login ke cloud.","warn");
+  }
 }
 
 function mergeStates(localState, remoteState){
@@ -613,13 +629,16 @@ async function loadAndMergeCloud(){
 
 async function initCloud(){
   if(!isCloudConfigured()){
-    setCloudStatus("Cloud belum dikonfigurasi. Isi SUPABASE_URL + publishable/anon key di index.html.","warn");
+    setCloudStatus("Cloud belum dikonfigurasi: pasang Publishable Key.","warn");
+    showLogin("Setup cloud belum selesai. Publishable Key belum dipasang.");
     return;
   }
   if(!window.supabase){
-    setCloudStatus("Library cloud gagal dimuat. Cek koneksi internet.","err");
+    setCloudStatus("Library cloud gagal dimuat. Cek internet.","err");
+    showLogin("Library Supabase gagal dimuat. Cek koneksi internet.");
     return;
   }
+
   cloudClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
     auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
   });
@@ -628,58 +647,21 @@ async function initCloud(){
   const {data:{session}}=await cloudClient.auth.getSession();
   if(session?.user){
     setAuthUi(session.user);
+    showGame();
     await loadAndMergeCloud();
   }else{
     setAuthUi(null);
-    setCloudStatus("Cloud siap. Login untuk mengaktifkan autosave lintas perangkat.","warn");
+    showLogin();
   }
 
   cloudClient.auth.onAuthStateChange((event,session)=>{
     setTimeout(async ()=>{
       setAuthUi(session?.user||null);
-      if(session?.user && (event==="SIGNED_IN" || event==="TOKEN_REFRESHED")){
-        await loadAndMergeCloud();
+      if(event==="SIGNED_OUT"){
+        showLogin();
       }
     },0);
   });
-}
-
-async function signUpCloud(){
-  if(!cloudReady){showToast("Konfigurasi Supabase dulu.");return;}
-  const email=document.getElementById("cloudEmail").value.trim();
-  const password=document.getElementById("cloudPassword").value;
-  if(!email || password.length<6){showToast("Isi email dan password minimal 6 karakter.");return;}
-  setCloudStatus("Membuat akun...","warn");
-  const {data,error}=await cloudClient.auth.signUp({email,password});
-  if(error){setCloudStatus("Daftar gagal: "+error.message,"err");return;}
-  if(data.session){
-    setAuthUi(data.user);
-    await loadAndMergeCloud();
-  }else{
-    setCloudStatus("Akun dibuat. Cek email untuk konfirmasi, lalu login.","ok");
-  }
-}
-
-async function signInCloud(){
-  if(!cloudReady){showToast("Konfigurasi Supabase dulu.");return;}
-  const email=document.getElementById("cloudEmail").value.trim();
-  const password=document.getElementById("cloudPassword").value;
-  if(!email || !password){showToast("Isi email dan password.");return;}
-  setCloudStatus("Login...","warn");
-  const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
-  if(error){setCloudStatus("Login gagal: "+error.message,"err");return;}
-  setAuthUi(data.user);
-  await loadAndMergeCloud();
-}
-
-async function signOutCloud(){
-  if(!cloudReady) return;
-  await uploadCloudState(false);
-  await cloudClient.auth.signOut();
-  cloudUser=null;
-  setAuthUi(null);
-  setCloudStatus("Logout. Data lokal tetap ada di perangkat ini.","warn");
-  showToast("Logout cloud.");
 }
 
 function applyTheme(theme){
@@ -917,9 +899,6 @@ document.getElementById("gameUsername").addEventListener("keydown",e=>{
 });
 
 document.getElementById("themeToggle").onclick=toggleTheme;
-document.getElementById("signUpBtn").onclick=signUpCloud;
-document.getElementById("signInBtn").onclick=signInCloud;
-document.getElementById("signOutBtn").onclick=signOutCloud;
 document.getElementById("syncBtn").onclick=async()=>{
   if(!cloudReady){showToast("Konfigurasi Supabase dulu.");return;}
   if(!cloudUser){showToast("Login dulu untuk sync.");return;}
@@ -927,7 +906,6 @@ document.getElementById("syncBtn").onclick=async()=>{
 };
 
 applyTheme(localStorage.getItem("moneyQuest_theme") || "dark");
-if(isGameLoggedIn()) showGame(); else showLogin();
 render();
 initCloud();
 </script>
