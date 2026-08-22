@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@
       radial-gradient(circle at 80% 10%, rgba(140,255,183,.10), transparent 30%),
       linear-gradient(180deg,#07111f,#050b14 72%);
   }
-  button,input,textarea{font:inherit}
+  button,input,textarea,select{font:inherit}
   .wrap{max-width:1180px;margin:auto;padding:24px}
   .topbar{
     display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -75,7 +75,7 @@
   }
   .mini b{font-size:19px;display:block;margin-top:3px}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  input,textarea{
+  input,textarea,select{
     width:100%;border:none;outline:none;border-radius:15px;
     padding:14px 15px;background:#071421;color:var(--text);
     border:1px solid rgba(255,255,255,.08);
@@ -201,7 +201,8 @@
     border-color:rgba(0,0,0,.12);
   }
   html[data-theme="light"] input,
-  html[data-theme="light"] textarea{
+  html[data-theme="light"] textarea,
+  html[data-theme="light"] select{
     background:#f1f1ef;color:#111;border-color:rgba(0,0,0,.12);
   }
   html[data-theme="light"] .progress{background:#dededb;border-color:rgba(0,0,0,.08)}
@@ -571,6 +572,59 @@
     .money{font-size:38px}
   }
 
+  /* Clean command-center redesign */
+  html[data-theme="light"]{
+    --bg:#f5f7fb;--panel:#ffffff;--panel2:#eef2f8;--text:#142033;
+    --muted:#6b778c;--accent:#2457e6;--accent2:#12a77a;--gold:#c47a08;
+    --danger:#d92d20;--shadow:0 12px 35px rgba(34,55,92,.09);
+  }
+  html[data-theme="light"] body{background:linear-gradient(180deg,#f8faff 0,#f3f6fb 100%)}
+  html[data-theme="light"] .topbar{background:rgba(255,255,255,.92);border-color:#e5eaf2}
+  html[data-theme="light"] .card{background:#fff;border-color:#e7ebf2;box-shadow:var(--shadow)}
+  html[data-theme="light"] .hero{background:linear-gradient(135deg,#10285b,#2457e6);color:#fff;border:0}
+  html[data-theme="light"] .hero .muted,html[data-theme="light"] .hero .sub,html[data-theme="light"] .hero .level-row{color:#dbe6ff}
+  html[data-theme="light"] .hero .eyebrow{color:#9fc0ff}
+  html[data-theme="light"] .hero .mini{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+  html[data-theme="light"] .hero .progress{background:rgba(255,255,255,.16)}
+  html[data-theme="light"] .hero .bar{background:linear-gradient(90deg,#76a8ff,#75f0cc)}
+  html[data-theme="light"] .primary{background:#2457e6;color:#fff;box-shadow:0 8px 18px rgba(36,87,230,.18)}
+  html[data-theme="light"] .secondary{background:#f0f3f8;color:#26354d;border-color:#e0e6ef}
+  html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select{background:#f8f9fc;border-color:#e1e6ef;color:#142033}
+  .daily-card{border-top:4px solid var(--accent)!important}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .todo-form{display:grid;grid-template-columns:1fr 150px auto;gap:9px}
+  .todo-list{display:grid;gap:9px;margin-top:16px}
+  .todo-item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:13px 14px;border:1px solid #e5eaf2;border-radius:15px;background:#fbfcfe}
+  .todo-check{width:22px;height:22px;accent-color:#12a77a;cursor:pointer}
+  .todo-item.done .todo-title{text-decoration:line-through;color:var(--muted)}
+  .todo-title{font-weight:800}.todo-meta{font-size:12px;color:var(--muted);margin-top:3px}
+  .priority{font-size:11px;font-weight:900;padding:6px 8px;border-radius:999px;background:#eef3ff;color:#2457e6}
+  .priority.high{background:#fff0ee;color:#d92d20}.priority.low{background:#eefaf6;color:#087a59}
+  .icon-btn{border:0;background:transparent;color:#98a2b3;cursor:pointer;font-size:18px;padding:6px}
+  .completion{height:8px;background:#edf1f6;border-radius:999px;overflow:hidden;margin-top:12px}
+  .completion>div{height:100%;background:#12a77a;transition:.25s}
+  .coach{background:linear-gradient(155deg,#111d35,#1b3157)!important;color:#fff;border:0!important}
+  .coach .eyebrow{color:#84abff}.coach .muted{color:#c2cee3}
+  .coach-message{font-size:20px;line-height:1.38;font-weight:900;margin:14px 0;padding-left:15px;border-left:4px solid #ffbd4a}
+  .coach-rule{display:flex;gap:9px;align-items:flex-start;padding:10px 0;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:#d7e0ef}
+  .focus-strip{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:14px;padding:12px;border-radius:14px;background:rgba(255,255,255,.08)}
+  .focus-strip b{color:#fff}.coach .btn.primary{background:#fff;color:#172744;box-shadow:none}
+  .war-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+  .war-stat{padding:11px 9px;border-radius:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+  .war-stat span{display:block;color:#9fb0cb;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+  .war-stat b{display:block;margin-top:5px;font-size:15px;color:#fff}
+  .war-progress{height:8px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:10px 0 5px}
+  .war-progress>div{height:100%;width:0;background:linear-gradient(90deg,#ffbd4a,#75f0cc);transition:.3s}
+  .command-tag{display:inline-flex;align-items:center;gap:7px;background:#d92d20;color:#fff;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.08em}
+  .coach-note{font-size:11px;line-height:1.5;color:#9fb0cb;margin-top:12px}
+  .lock-btn{width:100%;background:#ffbd4a!important;color:#172744!important}
+  .mission-lock{border:1px solid #dce4f0;background:#f7f9fc;border-radius:15px;padding:12px 14px;margin-top:14px;font-size:13px;color:#52627a}
+  .mission-lock strong{color:#142033}
+  html[data-theme="dark"] .mission-lock{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:#aebdd1}
+  html[data-theme="dark"] .mission-lock strong{color:#fff}
+  @media(max-width:700px){.todo-form{grid-template-columns:1fr}.todo-form .btn{width:100%}.section-head{display:block}}
+  @media(max-width:420px){.war-grid{grid-template-columns:1fr}.war-stat{display:flex;justify-content:space-between;align-items:center}.war-stat b{margin:0}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -634,6 +688,29 @@
         </div>
       </div>
 
+      <div class="card daily-card">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Eksekusi tanpa alasan</div>
+            <h2 style="margin:6px 0 4px">Misi Hari Ini</h2>
+            <p class="muted" style="margin:0">Tulis tugas yang menghasilkan progres nyata. Maksimal 5 agar fokus.</p>
+          </div>
+          <div class="badge" id="todoScore">0/0 SELESAI</div>
+        </div>
+        <div class="todo-form">
+          <input id="todoInput" type="text" maxlength="90" placeholder="Contoh: Upload 3 video affiliate">
+          <select id="todoPriority" aria-label="Prioritas tugas">
+            <option value="high">Wajib hari ini</option>
+            <option value="medium">Penting</option>
+            <option value="low">Tambahan</option>
+          </select>
+          <button class="btn primary" id="addTodo">+ Tambah Misi</button>
+        </div>
+        <div class="completion"><div id="todoBar" style="width:0"></div></div>
+        <div class="mission-lock"><strong>Peraturan komandan:</strong> minimal satu tugas berlabel WAJIB harus selesai sebelum hari boleh dikunci sebagai kemenangan.</div>
+        <div class="todo-list" id="todoList"></div>
+      </div>
+
       <div class="card">
         <div class="eyebrow">Tambah pemasukan</div>
         <h2 style="margin:6px 0 14px">Selesaikan Quest 💰</h2>
@@ -677,6 +754,31 @@
     </section>
 
     <aside class="stack">
+      <div class="card coach">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div class="eyebrow">Coach eksekusi</div><span class="command-tag">● KOMANDAN AKTIF</span>
+        </div>
+        <h2 style="margin:8px 0 0">OPERASI 5 TAHUN</h2>
+        <div class="war-grid">
+          <div class="war-stat"><span>Sisa waktu</span><b id="daysLeft">1.825 hari</b></div>
+          <div class="war-stat"><span>Target hari ini</span><b>Rp1 juta</b></div>
+          <div class="war-stat"><span>Hari menang</span><b id="winningDays">0 hari</b></div>
+        </div>
+        <div class="war-progress"><div id="dailyWarBar"></div></div>
+        <div class="level-row"><span id="dailyWarLabel">Rp0 / Rp1.000.000</span><span id="planDeadline">5 tahun</span></div>
+        <div class="coach-message" id="coachMessage">Berhenti menunggu mood. Pilih satu misi, mulai sekarang, dan tuntaskan.</div>
+        <div class="coach-rule"><span>01</span><b>Masa lalu adalah bukti kamu bertahan—bukan alasan untuk berhenti.</b></div>
+        <div class="coach-rule"><span>02</span><span>Tugas WAJIB tidak dibawa tidur. Mulai sebelum pikiran mencari alasan.</span></div>
+        <div class="coach-rule"><span>03</span><span>Istirahat terjadwal adalah disiplin. Kabur dari tugas adalah pelanggaran.</span></div>
+        <div class="coach-rule"><span>04</span><span>Tidak ada hari nol: minimal satu tindakan terukur untuk target 5 tahun.</span></div>
+        <div class="focus-strip"><span class="muted">Perintah sekarang</span><b id="coachOrder">Tambahkan misi pertama.</b></div>
+        <div class="actions">
+          <button class="btn primary" id="focusBtn">⚡ MULAI 25 MENIT</button>
+          <button class="btn primary lock-btn" id="closeDayBtn">🔒 KUNCI KEMENANGAN HARI INI</button>
+        </div>
+        <div class="coach-note">Coach ini keras pada kebiasaan, bukan pada harga dirimu. Dilarang menghukum tubuh, mengurangi tidur secara ekstrem, atau menyakiti diri demi target.</div>
+      </div>
+
       <div class="card">
         <div class="eyebrow">Peta level</div>
         <h2 style="margin:6px 0 4px">Milestone Harian</h2>
@@ -751,8 +853,17 @@ const rupiah = n => new Intl.NumberFormat("id-ID",{style:"currency",currency:"ID
 let state = JSON.parse(localStorage.getItem(KEY) || "null") || {
   incomes: [],
   thoughts: [],
+  todos: [],
   highestShownLevelByDate: {}
 };
+state.todos=state.todos||[];
+const makePlan=()=>{
+  const start=new Date(), end=new Date(start);
+  end.setFullYear(end.getFullYear()+5);
+  return {startDate:todayKey(),endDate:end.toISOString().slice(0,10),dailyTarget:1000000,completedDays:[]};
+};
+state.plan=state.plan||makePlan();
+state.plan.completedDays=state.plan.completedDays||[];
 
 function save(){
   localStorage.setItem(KEY, JSON.stringify(state));
@@ -857,6 +968,8 @@ function mergeStates(localState, remoteState){
   const merged = {
     incomes: [],
     thoughts: [],
+    todos: [],
+    plan: localState?.plan||remoteState?.plan||makePlan(),
     highestShownLevelByDate: {
       ...(localState?.highestShownLevelByDate||{}),
       ...(remoteState?.highestShownLevelByDate||{})
@@ -875,6 +988,12 @@ function mergeStates(localState, remoteState){
     thoughtMap.set(k,x);
   });
   merged.thoughts=[...thoughtMap.values()].sort((a,b)=>(a.ts||"").localeCompare(b.ts||""));
+  const todoMap=new Map();
+  [...(localState?.todos||[]), ...(remoteState?.todos||[])].forEach(x=>todoMap.set(x.id||x.ts,x));
+  merged.todos=[...todoMap.values()].sort((a,b)=>(a.ts||"").localeCompare(b.ts||""));
+  const planA=localState?.plan, planB=remoteState?.plan;
+  merged.plan=(planA?.startDate||"9999")<=(planB?.startDate||"9999")?(planA||planB||makePlan()):(planB||planA||makePlan());
+  merged.plan.completedDays=[...new Set([...(planA?.completedDays||[]),...(planB?.completedDays||[])])].sort();
   return merged;
 }
 
@@ -1116,6 +1235,63 @@ function render(){
       <div class="old">${escapeHtml(t.old)}</div>
       <div class="new">↳ ${escapeHtml(t.new)}</div>
     </div>`).join("");
+
+  renderTodos();
+}
+
+function todayTodos(){return state.todos.filter(x=>x.date===todayKey());}
+function renderTodos(){
+  const todos=todayTodos();
+  const done=todos.filter(x=>x.done).length;
+  const pct=todos.length?Math.round(done/todos.length*100):0;
+  document.getElementById("todoScore").textContent=`${done}/${todos.length} SELESAI`;
+  document.getElementById("todoBar").style.width=pct+"%";
+  const labels={high:"WAJIB",medium:"PENTING",low:"TAMBAHAN"};
+  const list=document.getElementById("todoList");
+  list.innerHTML=todos.length?todos.map(t=>`<div class="todo-item ${t.done?'done':''}">
+    <input class="todo-check" type="checkbox" ${t.done?'checked':''} data-todo-check="${t.id}" aria-label="Tandai selesai">
+    <div><div class="todo-title">${escapeHtml(t.title)}</div><div class="todo-meta">${t.done?'Dituntaskan hari ini':'Belum selesai — kerjakan sekarang'}</div></div>
+    <div style="display:flex;align-items:center"><span class="priority ${t.priority}">${labels[t.priority]||'PENTING'}</span><button class="icon-btn" data-todo-delete="${t.id}" title="Hapus">×</button></div>
+  </div>`).join(""):`<div class="muted">Belum ada misi. Tanpa misi tertulis, hari mudah habis tanpa hasil.</div>`;
+  const pending=todos.find(x=>!x.done&&x.priority==="high")||todos.find(x=>!x.done);
+  const hour=new Date().getHours();
+  document.getElementById("coachMessage").textContent=todos.length===0
+    ?"DENGAR, ARDIAN. Tanpa misi tertulis, kamu sedang menyerahkan hari ini kepada kebiasaan lama. Tulis satu tugas WAJIB sekarang."
+    :done===todos.length
+      ?"SEMUA MISI TUNTAS. Inilah jawabanmu kepada masa lalu: bukti, bukan amarah. Kunci kemenangan, lalu pulihkan tenaga untuk besok."
+      :hour>=20
+        ?`WAKTU MENIPIS. Masih ada ${todos.length-done} misi. Mereka pernah meremehkanmu—jangan ikut meremehkan masa depanmu dengan menunda. Tuntaskan yang WAJIB.`
+        :`MASIH ADA ${todos.length-done} MISI. Mood tidak memimpin operasi ini. Pilih tugas WAJIB, tekan timer, dan jangan pindah sebelum ada hasil.`;
+  document.getElementById("coachOrder").textContent=pending?pending.title:"Evaluasi hasil hari ini.";
+  renderWarRoom();
+  document.querySelectorAll("[data-todo-check]").forEach(el=>el.onchange=()=>toggleTodo(el.dataset.todoCheck));
+  document.querySelectorAll("[data-todo-delete]").forEach(el=>el.onclick=()=>deleteTodo(el.dataset.todoDelete));
+}
+function addTodo(){
+  const input=document.getElementById("todoInput");const title=input.value.trim();
+  if(!title){showToast("Tulis misi yang jelas dulu.");return;}
+  if(todayTodos().length>=5){showToast("Maksimal 5 misi. Selesaikan, bukan menumpuk.");return;}
+  state.todos.push({id:Date.now().toString(36),title,priority:document.getElementById("todoPriority").value,done:false,date:todayKey(),ts:new Date().toISOString()});
+  input.value="";save();renderTodos();showToast("Misi dikunci. Sekarang kerjakan.");
+}
+function toggleTodo(id){const t=state.todos.find(x=>x.id===id);if(!t)return;t.done=!t.done;t.doneAt=t.done?new Date().toISOString():null;save();renderTodos();showToast(t.done?"Misi selesai. Lanjut ke berikutnya.":"Misi dibuka kembali.");}
+function deleteTodo(id){state.todos=state.todos.filter(x=>x.id!==id);save();renderTodos();}
+function renderWarRoom(){
+  const end=new Date(state.plan.endDate+"T23:59:59");
+  const days=Math.max(0,Math.ceil((end-new Date())/86400000));
+  const target=Number(state.plan.dailyTarget)||1000000,total=todayTotal();
+  document.getElementById("daysLeft").textContent=days.toLocaleString("id-ID")+" hari";
+  document.getElementById("winningDays").textContent=(state.plan.completedDays||[]).length+" hari";
+  document.getElementById("dailyWarBar").style.width=Math.min(100,total/target*100)+"%";
+  document.getElementById("dailyWarLabel").textContent=rupiah(total)+" / "+rupiah(target);
+  document.getElementById("planDeadline").textContent="Batas "+end.toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"});
+}
+function closeDay(){
+  const todos=todayTodos(), must=todos.filter(x=>x.priority==="high"), pending=must.filter(x=>!x.done);
+  if(!must.length){showToast("Belum ada misi WAJIB. Tetapkan satu hasil utama.");document.getElementById("todoInput").focus();return;}
+  if(pending.length){showToast("DITOLAK: "+pending.length+" misi WAJIB belum selesai.");return;}
+  if(!state.plan.completedDays.includes(todayKey())) state.plan.completedDays.push(todayKey());
+  save();render();showToast("Hari dikunci sebagai kemenangan. Bukti sudah tercatat.");
 }
 function escapeHtml(str=""){
   return str.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -1143,6 +1319,16 @@ document.getElementById("addIncome").onclick=()=>{
   addIncome(document.getElementById("amount").value,document.getElementById("source").value);
   document.getElementById("amount").value="";
 };
+document.getElementById("addTodo").onclick=addTodo;
+document.getElementById("todoInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTodo();});
+document.getElementById("focusBtn").onclick=()=>{
+  const pending=todayTodos().find(x=>!x.done&&x.priority==="high")||todayTodos().find(x=>!x.done);
+  if(!pending){showToast("Tambahkan misi atau lakukan evaluasi hari ini.");return;}
+  showToast("Timer dimulai. 25 menit: "+pending.title);
+  const end=Date.now()+25*60*1000;const btn=document.getElementById("focusBtn");
+  btn.disabled=true;const timer=setInterval(()=>{const left=Math.max(0,end-Date.now());const m=Math.floor(left/60000),s=Math.floor(left%60000/1000);btn.textContent=`FOKUS ${m}:${String(s).padStart(2,'0')}`;if(!left){clearInterval(timer);btn.disabled=false;btn.textContent="⚡ MULAI 25 MENIT";showToast("Sesi selesai. Tandai hasil atau lanjut satu sesi lagi.");}},1000);
+};
+document.getElementById("closeDayBtn").onclick=closeDay;
 document.querySelectorAll("[data-quick]").forEach(btn=>btn.onclick=()=>addIncome(btn.dataset.quick,"Quick Quest"));
 
 document.getElementById("reframeBtn").onclick=()=>{
@@ -1185,7 +1371,7 @@ document.getElementById("exportBtn").onclick=()=>{
 document.getElementById("resetBtn").onclick=()=>{
   if(confirm("Reset semua data Money Quest di browser ini?")){
     localStorage.removeItem(KEY);
-    state={incomes:[],thoughts:[],highestShownLevelByDate:{}};
+    state={incomes:[],thoughts:[],todos:[],plan:makePlan(),highestShownLevelByDate:{}};
     render();showToast("Data sudah di-reset.");
   }
 };
@@ -1207,7 +1393,7 @@ document.getElementById("syncBtn").onclick=async()=>{
   await uploadCloudState(true);
 };
 
-applyTheme(localStorage.getItem("moneyQuest_theme") || "dark");
+applyTheme(localStorage.getItem("moneyQuest_theme") || "light");
 render();
 initCloud();
 </script>
